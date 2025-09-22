@@ -1,0 +1,102 @@
+# Dictionary to store accounts
+# Format: { account_number: { 'name': str, 'balance': float } }
+accounts = {}
+
+# Create a new bank account
+def create_account():
+    acc_no = input("Enter new account number: ")
+    if acc_no in accounts:
+        print("Account already exists.")
+        return
+    name = input("Enter account holder name: ")
+    balance = float(input("Enter initial deposit amount: "))
+    accounts[acc_no] = {'name': name, 'balance': balance}
+    print("Account created successfully.")
+
+# Deposit money into an account
+def deposit():
+    acc_no = input("Enter account number: ")
+    if acc_no not in accounts:
+        print("Account not found.")
+        return
+    amount = float(input("Enter amount to deposit: "))
+    if amount <= 0:
+        print("Invalid amount.")
+        return
+    accounts[acc_no]['balance'] += amount
+    print(f"${amount:.2f} deposited successfully.")
+
+# Withdraw money from an account
+def withdraw():
+    acc_no = input("Enter account number: ")
+    if acc_no not in accounts:
+        print("Account not found.")
+        return
+    amount = float(input("Enter amount to withdraw: "))
+    if amount <= 0:
+        print("Invalid amount.")
+        return
+    if accounts[acc_no]['balance'] < amount:
+        print("Insufficient balance.")
+        return
+    accounts[acc_no]['balance'] -= amount
+    print(f"${amount:.2f} withdrawn successfully.")
+
+# Check account balance
+def check_balance():
+    acc_no = input("Enter account number: ")
+    if acc_no not in accounts:
+        print("Account not found.")
+        return
+    balance = accounts[acc_no]['balance']
+    print(f"Account Holder: {accounts[acc_no]['name']}")
+    print(f"Account Balance: ${balance:.2f}")
+
+# Sort accounts by balance using bubble sort
+def sort_accounts_by_balance():
+    if not accounts:
+        print("No accounts to sort.")
+        return
+    acc_list = list(accounts.items())
+    n = len(acc_list)
+
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if acc_list[j][1]['balance'] > acc_list[j+1][1]['balance']:
+                acc_list[j], acc_list[j+1] = acc_list[j+1], acc_list[j]
+
+    print("\nAccounts sorted by balance:")
+    for acc_no, info in acc_list:
+        print(f"Account No: {acc_no} | Name: {info['name']} | Balance: ${info['balance']:.2f}")
+
+# Menu-driven interface
+def menu():
+    while True:
+        print("\n--- Bank Account Management ---")
+        print("1. Create New Account")
+        print("2. Deposit Money")
+        print("3. Withdraw Money")
+        print("4. Check Account Balance")
+        print("5. Sort Accounts by Balance")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == '1':
+            create_account()
+        elif choice == '2':
+            deposit()
+        elif choice == '3':
+            withdraw()
+        elif choice == '4':
+            check_balance()
+        elif choice == '5':
+            sort_accounts_by_balance()
+        elif choice == '6':
+            print("Thank you for using the bank system. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+# Run the program
+menu()
